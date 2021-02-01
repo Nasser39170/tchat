@@ -1,0 +1,104 @@
+body, p {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5rem;
+}
+
+.main {
+    min-height: 55vh;
+    max-height: 55vh;
+}
+
+#message_tchat, #liste_membre_connecte {
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-width: thick !important;
+}
+
+.bleu {
+    color: cyan;
+}
+
+.rose {
+    color: rosybrown;
+}
+
+.bleu, .rose {
+    cursor: pointer;
+}
+
+.bleu:hover {
+    background-color: cyan;
+    color: black;
+}
+
+.rose:hover {
+    background-color: rosybrown;
+    color: black;
+}
+
+.smiley {
+    margin: 2px;
+    width: 22px;
+}
+
+.loader {
+    background: url(ajax-loader.gif) no-repeat;
+    background-size:cover;
+    background-position: center;
+}
+
+.splash {
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    min-height: 50vh;
+}
+
+#formulaire_tchat .btn {
+    min-width: 40%;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius:50%;
+}
+
+#depotavatar{
+    cursor:pointer;
+}
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #6c757d;
+    border-radius: 15px;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+    border-radius: 15px;
+}
+
+/* ---------------------------------------- media queries  ---------------------------------------------- */
+
+@media screen and (max-width:768px) {
+    .main {
+        max-height: 30vh;
+        min-height: 20vh;
+    }
+}

@@ -1,0 +1,105 @@
+<?php
+
+/* mon require */
+require_once('inc/init.php');
+
+if (!isset($_SESSION['pseudo'])) // si on a pas de pseudo enregistré en session, c'est que je ne suis pas passé par la page connexion
+{
+    header('location:connexion.php'); // redirection vers connexion
+    exit();
+}
+
+require_once('header.php');
+
+?>
+
+
+<div class="row d-flex justify-content-between">
+    <div id="message_tchat" class="col-md-8 main bg-dark text-light px-4 py-2 order-1 order-md-0 border border-secondary rounded">
+
+        <h5>Connecté en tant que <?= ucfirst($_SESSION['pseudo']) ?></h5>
+        <?php
+        $result = $pdo->query("SELECT 
+            d.id_dialogue,m.pseudo,m.civilite,d.message,
+            DATE_FORMAT(d.date,'%d/%m/%Y') as datefr,
+            DATE_FORMAT(d.date, '%H:%i:%s') as heurefr
+            FROM dialogue d, membre m
+            WHERE m.id_membre = d.id_membre 
+            ORDER BY d.date");
+        while ($dialogue = $result->fetch()) {
+            if ($dialogue['civilite'] == 'm') {
+                $couleur = "bleu";
+            } else {
+                $couleur = "rose";
+            }
+
+            echo '<p title="' . $dialogue['datefr'] . ' - ' . $dialogue['heurefr'] . '" class="' . $couleur . '">' . $dialogue['heurefr'] . ' <strong>' . ucfirst($dialogue['pseudo']) . '</strong>
+                : ' . htmlspecialchars($dialogue['message'], ENT_NOQUOTES) . '</p>';
+        }
+        ?>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div id="liste_membre_connecte" class="col-12 offset-md-1 col-md-11 main bg-dark text-light px-4 py-2 order-0 order-md-1 border border-secondary rounded mb-2 mb-md-0">
+                <h5>Membres connectés:</h5>
+                <?php
+                $resultat = $pdo->query("SELECT * FROM membre WHERE date_active >" . (time() - 1800) . " ORDER BY pseudo ASC");
+                while ($membre = $resultat->fetch()) {
+                    if ($membre['civilite'] == 'm') {
+                        $couleur = 'bleu';
+                        $titre = "Homme";
+                    } else {
+                        $couleur = 'rose';
+                        $titre = "Femme";
+                    }
+
+                    $avatar = (!empty($membre['avatar'])) ? $membre['avatar'] : 'unknown.png';
+                    echo '<div class="d-flex  align-items-center justify-content-start my-2">
+                        <img src="avatars/' . $avatar . '" class="avatar">
+                        <p class="' . $couleur . ' pl-2" title="' . $titre . '">' . ucfirst($membre['pseudo']) . '</p>
+                    </div>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-12  px-3 py-3">
+        <img class="smiley" src="smil/smiley1.png" alt=":)">
+        <img class="smiley" src="smil/smiley2.png" alt=":(">
+        <img class="smiley" src="smil/smiley3.png" alt=";)">
+        <img class="smiley" src="smil/smiley4.png" alt=":p">
+        <img class="smiley" src="smil/smiley5.png" alt=":x">
+        <img class="smiley" src="smil/smiley6.png" alt=":/">
+        <img class="smiley" src="smil/like.png" alt="^1">
+        <img class="smiley" src="smil/dislike.png" alt="^2">
+        <img class="smiley" src="smil/linkedin.png" alt="^3">
+        <img class="smiley" src="smil/youtube.png" alt="^4">
+        <img class="smiley" src="smil/facebook.png" alt="^5">
+        <img class="smiley" src="smil/whatsapp.png" alt="^6">
+        <img class="smiley" src="smil/snapchat.png" alt="^7">
+        <img class="smiley" src="smil/twitter.png" alt="^8">
+        <img class="smiley" src="smil/tiktok.png" alt="^9">
+    </div>
+</div>
+
+
+<div id="formulaire_tchat">
+    <form method="post" action="#" class="row  bg-dark text-light px-2 py-2 bg-light">
+        <div class="col-md-8">
+            <input type="text" id="message" name="message" class="form-control form-control-lg">
+        </div>
+        <div class="col-md-4 mt-3 mt-md-0 d-flex align-items-center justify-content-center">
+            <button type="submit" name="envoi" class="btn btn-primary btn-lg d-block mx-auto" id="submit"><img src="smil/send.png"></bouton>
+            <button type="button" class="btn btn-danger btn-lg d-block mx-auto" id="deco_button"><img src="smil/deco.png"></button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+
+</html>
